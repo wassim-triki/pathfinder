@@ -13,6 +13,7 @@ module.exports = {
         },
         accent: {
           100: '#853bce',
+          50: '#9853db',
         },
       },
       fontFamily: {
@@ -21,4 +22,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};

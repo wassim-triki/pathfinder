@@ -5,4 +5,9 @@ export interface ICell {
   isStart: boolean;
   isTarget: boolean;
   isWall: boolean;
+  visited: boolean;
+  isNeighbor?: boolean;
+  g: number;
+  h: number;
+  f: number;
 }

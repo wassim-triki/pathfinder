@@ -1,5 +1,11 @@
-import React, { FunctionComponent } from 'react';
-import { ICell } from '../interfaces/Cell';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { astar } from '../astar';
+import { useGridContext } from '../context/gridContext';
+import { createGrid } from '../helpers/createGrid';
+import { getLowestFCell } from '../helpers/getLowestFNode';
+import { getNeighbors } from '../helpers/getNeighbors';
+import { reconstructPath } from '../helpers/reconstructPath';
+import { ICell } from '../interfaces/ICell';
 import Cell from './Cell';
 
 interface GridProps {
@@ -8,32 +14,27 @@ interface GridProps {
 }
 
 const Grid: FunctionComponent<GridProps> = ({ rows, cols }) => {
-  const grid: ICell[][] = [];
+  const { setGrid, grid } = useGridContext();
+  const [path, setPath] = useState<ICell[]>([]);
 
-  for (let row = 0; row < rows; row++) {
-    grid[row] = [];
-    for (let col = 0; col < cols; col++) {
-      const cell = {
-        id: `${row}-${col}`,
-        row,
-        col,
-        isStart: row === 0 && col === 0,
-        isTarget: row === rows - 1 && col === cols - 1,
-        isWall: Math.random() < 0.01,
-      };
-      grid[row].push(cell);
-    }
-  }
-  console.log(grid);
+  useEffect(() => {
+    setGrid(createGrid(rows, cols));
+  }, []);
+
+  useEffect(() => {
+    console.log(grid);
+  }, [grid]);
+
   return (
     <div className='flex flex-col bg-red-300x col-span-4 '>
-      {grid.map((row, i) => (
-        <div key={i} className='flex'>
-          {row.map((cell) => (
-            <Cell {...cell} />
-          ))}
-        </div>
-      ))}
+      {grid &&
+        grid.map((row, i) => (
+          <div key={i} className='flex'>
+            {row.map((cell) => (
+              <Cell key={cell.id} {...cell} />
+            ))}
+          </div>
+        ))}
     </div>
   );
 };
