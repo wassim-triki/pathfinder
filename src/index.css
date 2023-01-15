@@ -14,5 +14,11 @@
   .btn {
     @apply flex justify-center items-center border-[1px] border-light-100 bg-transparent px-3 py-1 rounded-[0.375rem] text-lg hover:bg-light-100 active:transform active:scale-95
   }
+  .cell.start{
+    @apply bg-green-400 hover:bg-green-300
+  }
+  .cell.target{
+    @apply bg-red-400 hover:bg-red-300
+  }
 }
 

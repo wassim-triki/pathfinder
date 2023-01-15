@@ -1,6 +1,6 @@
-import React from 'react'
-import Grid from './Grid'
-import Menu from './Menu'
+import React from 'react';
+import Grid from './Grid';
+import Menu from './Menu';
 
 const Layout = () => {
   return (
@@ -8,7 +8,7 @@ const Layout = () => {
       <Grid rows={20} cols={37} />
       <Menu />
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
