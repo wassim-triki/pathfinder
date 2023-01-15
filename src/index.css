@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer{
+  body{
+    @apply bg-dark-100 font-inter text-white 
+  }
+}
+
+@layer components{
+  .btn {
+    @apply flex justify-center items-center border-[1px] border-light-100 bg-transparent px-3 py-1 rounded-lg text-lg hover:bg-light-100 active:transform active:scale-95
+  }
+}
+
