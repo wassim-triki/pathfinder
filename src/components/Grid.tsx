@@ -8,6 +8,7 @@ interface GridProps {
 
 const Grid: FunctionComponent<GridProps> = ({ rows, cols }) => {
   const grid: JSX.Element[][] = []
+
   for (let row = 0; row < rows; row++) {
     grid[row] = []
     for (let col = 0; col < cols; col++) {
