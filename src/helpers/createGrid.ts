@@ -1,12 +1,14 @@
 import { ICell } from '../interfaces/ICell';
 import { manhattanDistance } from './manhattanDistance';
 
-export const createGrid = (rows: number, cols: number): ICell[][] => {
+export const createGrid = (): ICell[][] => {
+  const rows = 20;
+  const cols = 37;
   const grid: ICell[][] = [];
   for (let row = 0; row < rows; row++) {
     grid[row] = [];
     for (let col = 0; col < cols; col++) {
-      const isStart = row === 0 && col === 0;
+      let isStart = row === 0 && col === 0;
       const isTarget = row === rows - 1 && col === cols - 1;
       const isWall = Math.random() < 0.1 && !isStart && !isTarget;
       const cell = {

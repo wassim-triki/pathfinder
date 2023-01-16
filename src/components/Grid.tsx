@@ -13,17 +13,8 @@ interface GridProps {
   cols: number;
 }
 
-const Grid: FunctionComponent<GridProps> = ({ rows, cols }) => {
-  const { setGrid, grid } = useGridContext();
-  const [path, setPath] = useState<ICell[]>([]);
-
-  useEffect(() => {
-    setGrid(createGrid(rows, cols));
-  }, []);
-
-  useEffect(() => {
-    console.log(grid);
-  }, [grid]);
+const Grid: FunctionComponent<GridProps> = () => {
+  const { grid } = useGridContext();
 
   return (
     <div className='flex flex-col bg-red-300x col-span-4 '>
@@ -31,7 +22,7 @@ const Grid: FunctionComponent<GridProps> = ({ rows, cols }) => {
         grid.map((row, i) => (
           <div key={i} className='flex'>
             {row.map((cell) => (
-              <Cell key={cell.id} {...cell} />
+              <Cell key={cell.id} {...cell} cell={cell} />
             ))}
           </div>
         ))}

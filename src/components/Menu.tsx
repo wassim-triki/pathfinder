@@ -4,14 +4,15 @@ import { useGridContext } from '../context/gridContext';
 import { ICell } from '../interfaces/ICell';
 
 const Menu = () => {
-  const { grid, setGrid } = useGridContext();
+  const { grid, setGrid, startNode } = useGridContext();
 
   return (
     <div className='flex justify-center items-center'>
       <button
         className='btn px-8'
         onClick={() => {
-          setGrid(astar(grid));
+          setGrid(astar(grid, startNode));
+          // console.log(astar(grid));
         }}
       >
         Start

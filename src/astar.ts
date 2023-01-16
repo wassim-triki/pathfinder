@@ -3,10 +3,10 @@ import { getNeighbors } from './helpers/getNeighbors';
 import { reconstructPath } from './helpers/reconstructPath';
 import { ICell } from './interfaces/ICell';
 import lodash from 'lodash';
-export const astar = (grid: ICell[][]) => {
-  // console.log(grid);
+export const astar = (grid: ICell[][], startNode: ICell | null) => {
   const newGrid = lodash.cloneDeep(grid);
-  const start: ICell = newGrid[0][0];
+  if (!startNode) return newGrid;
+  const start = startNode;
   start.g = 0;
   start.f = start.h;
   const openSet = new Set<ICell>();
@@ -14,7 +14,7 @@ export const astar = (grid: ICell[][]) => {
   const cameFrom = new Map<ICell, ICell>();
   while (openSet.size > 0) {
     const current = getLowestFCell(openSet);
-    if (!current) return 'XXXXXXXXXX';
+    if (!current) return newGrid;
     if (current.isTarget) {
       break;
     }
