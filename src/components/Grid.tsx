@@ -9,8 +9,8 @@ import { ICell } from '../interfaces/ICell';
 import Cell from './Cell';
 
 interface GridProps {
-  rows: number;
-  cols: number;
+  // rows: number;
+  // cols: number;
 }
 
 const Grid: FunctionComponent<GridProps> = () => {
