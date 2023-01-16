@@ -16,16 +16,18 @@ const initialState: GridContextProps = {
 };
 
 interface GridContextProviderProps {
+  rows: number;
+  cols: number;
   children: React.ReactNode;
 }
 const GridContext = createContext<GridContextProps>(initialState);
 
-export const GridContextProvider = ({ children }: GridContextProviderProps) => {
+export const GridContextProvider = ({ rows, cols, children }: GridContextProviderProps) => {
   const [grid, setGrid] = useState(initialState.grid);
   const [startNode, setStartNode] = useState(initialState.startNode);
 
   useEffect(() => {
-    setGrid(createGrid());
+    setGrid(createGrid(rows, cols));
   }, []);
 
   return (

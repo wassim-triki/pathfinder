@@ -17,12 +17,12 @@ const Grid: FunctionComponent<GridProps> = () => {
   const { grid } = useGridContext();
 
   return (
-    <div className='flex flex-col bg-red-300x col-span-4 '>
+    <div onDragOver={(e) => e.preventDefault()} className='flex flex-col bg-red-300x col-span-4 '>
       {grid &&
         grid.map((row, i) => (
           <div key={i} className='flex'>
             {row.map((cell) => (
-              <Cell key={cell.id} {...cell} cell={cell} />
+              <Cell key={cell.id} cell={cell} />
             ))}
           </div>
         ))}

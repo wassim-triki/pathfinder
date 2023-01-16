@@ -6,11 +6,9 @@ import Menu from './Menu';
 
 const Layout = () => {
   return (
-    <GridContextProvider>
+    <GridContextProvider rows={20} cols={37}>
       <div className='grid grid-cols-5 border-2x border-white w-full'>
-        {/* <Grid rows={20} cols={37} /> */}
         <Grid />
-        {/* <Grid rows={10} cols={10} /> */}
         <Menu />
       </div>
     </GridContextProvider>

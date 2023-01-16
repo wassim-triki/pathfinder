@@ -1,25 +1,15 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { ICell } from '../interfaces/ICell';
 
-interface CellProps extends ICell {
+interface CellProps {
   cell: ICell;
 }
 
-const Cell: FunctionComponent<CellProps> = ({
-  cell,
-  row,
-  col,
-  id,
-  isStart,
-  isTarget,
-  isWall,
-  isNeighbor,
-  visited,
-}: CellProps) => {
-  useEffect(() => {}, []);
+const Cell: FunctionComponent<CellProps> = ({ cell }: CellProps) => {
+  const { isStart, isTarget, isWall, isNeighbor, visited } = cell;
+
   return (
     <div
-      key={`${row}-${col}`}
       className={`border-[1px] bg-{} border-light-100 w-8 h-8 cursor-pointer ${
         !isStart && !isTarget && !isWall && 'hover:bg-light-100'
       }  active:transform active:scale-105 activex:bg-white transition-transform active:border-white 
