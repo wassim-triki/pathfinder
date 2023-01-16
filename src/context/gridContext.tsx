@@ -7,12 +7,14 @@ interface GridContextProps {
   setGrid: React.Dispatch<React.SetStateAction<ICell[][]>>;
   startNode: ICell | null;
   setStartNode: React.Dispatch<React.SetStateAction<ICell | null>>;
+  resetGrid: () => void;
 }
 const initialState: GridContextProps = {
   grid: [],
   setGrid: () => {},
   startNode: null,
   setStartNode: () => {},
+  resetGrid: () => {},
 };
 
 interface GridContextProviderProps {
@@ -24,14 +26,20 @@ const GridContext = createContext<GridContextProps>(initialState);
 
 export const GridContextProvider = ({ rows, cols, children }: GridContextProviderProps) => {
   const [grid, setGrid] = useState(initialState.grid);
+  const [reset, setReset] = useState(false);
   const [startNode, setStartNode] = useState(initialState.startNode);
 
   useEffect(() => {
     setGrid(createGrid(rows, cols));
-  }, []);
+  }, [reset]);
+
+  const resetGrid = () => {
+    setGrid(createGrid(rows, cols));
+    setStartNode(null);
+  };
 
   return (
-    <GridContext.Provider value={{ grid, setGrid, startNode, setStartNode }}>
+    <GridContext.Provider value={{ resetGrid, grid, setGrid, startNode, setStartNode }}>
       {children}
     </GridContext.Provider>
   );

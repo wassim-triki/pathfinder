@@ -26,8 +26,8 @@ const Cell: FunctionComponent<CellProps> = ({ cell }: CellProps) => {
       className={`border-[1px] bg-{} border-light-100 w-8 h-8 cursor-pointer ${
         !isStart && !isTarget && !isWall && 'hover:bg-light-100'
       }  active:border-white 
-      ${visited && !isStart && !isTarget && 'bg-blue-400 animate-scale '}
-      ${isNeighbor && !visited && !isTarget && 'bg-blue-200'}
+      ${visited && !isStart && !isTarget && 'bg-yellow-400 animate-scale '}
+      ${isNeighbor && !visited && !isTarget && 'bg-gray-500'}
       ${isWall && 'bg-white animate-scale '}
       ${isTarget && 'bg-red-400'}
       ${isStart && 'bg-green-400'}  
