@@ -1,28 +1,41 @@
-import { ICell } from '../interfaces/ICell';
 import { manhattanDistance } from './manhattanDistance';
-
-export const createGrid = (rows: number, cols: number): ICell[][] => {
-  const grid: ICell[][] = [];
-  for (let row = 0; row < rows; row++) {
-    grid[row] = [];
-    for (let col = 0; col < cols; col++) {
-      const isStart = row === 0 && col === 0;
-      const isTarget = row === rows - 1 && col === cols - 1;
-      const isWall = Math.random() < 0.1 && !isStart && !isTarget && false;
-      const cell = {
-        id: `${row}-${col}`,
-        row,
-        col,
-        isStart,
-        isTarget,
-        isWall,
+import {
+  START_NODE_ROW,
+  START_NODE_COL,
+  TARGET_NODE_ROW,
+  TARGET_NODE_COL,
+} from '../constants/constances';
+import { TCell, TGrid, TPosition, TRow } from '../types/types';
+export const createGrid = (
+  rows: number,
+  cols: number,
+  startPos: TPosition,
+  targetPos: TPosition
+): TCell[][] => {
+  const grid: TGrid = [];
+  for (let i = 0; i < rows; i++) {
+    const row: TRow = [];
+    for (let j = 0; j < cols; j++) {
+      const type =
+        i === startPos.row && j === startPos.col
+          ? 'start'
+          : i === targetPos.row && j === targetPos.col
+          ? 'target'
+          : 'initial';
+      const isTarget = i === targetPos.row && j === targetPos.col;
+      const cell: TCell = {
+        id: `${i}-${j}`,
+        row: i,
+        col: j,
+        type,
         visited: false,
         g: Infinity,
-        h: isTarget ? 0 : manhattanDistance(row, col, rows - 1, cols - 1),
+        h: isTarget ? 0 : manhattanDistance(i, j, targetPos.row, targetPos.col),
         f: Infinity,
       };
-      grid[row].push(cell);
+      row.push(cell);
     }
+    grid.push(row);
   }
   return grid;
 };

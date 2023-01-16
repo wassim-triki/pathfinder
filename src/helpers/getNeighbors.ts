@@ -1,7 +1,7 @@
-import { ICell } from '../interfaces/ICell';
+import { TCell, TGrid } from '../types/types';
 
-export const getNeighbors = (cell: ICell, grid: ICell[][]): ICell[] => {
-  const neighbors: ICell[] = [];
+export const getNeighbors = (cell: TCell, grid: TGrid): TCell[] => {
+  const neighbors: TCell[] = [];
   const rows = grid.length;
   const cols = grid[0].length;
   const { row, col } = cell;

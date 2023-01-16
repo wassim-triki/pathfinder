@@ -1,7 +1,7 @@
-import { ICell } from '../interfaces/ICell';
+import { TCell } from '../types/types';
 
-export const getLowestFCell = (openSet: Set<ICell>): ICell | undefined => {
-  let lowestFCell: ICell | undefined;
+export const getLowestFCell = (openSet: Set<TCell>): TCell | undefined => {
+  let lowestFCell: TCell | undefined;
   let lowestFValue = Infinity;
   for (const cell of openSet) {
     if (cell.f < lowestFValue) {

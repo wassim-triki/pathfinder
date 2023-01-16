@@ -1,10 +1,9 @@
 import React from 'react';
 import { useAstar } from '../hooks/useAstar';
 import { useGridContext } from '../context/gridContext';
-import { ICell } from '../interfaces/ICell';
 
 const Menu = () => {
-  const { grid, setGrid, startNode, resetGrid } = useGridContext();
+  const { grid, setGrid, resetGrid } = useGridContext();
 
   const astar = useAstar();
 

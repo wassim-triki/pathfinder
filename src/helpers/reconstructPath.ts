@@ -1,7 +1,7 @@
-import { ICell } from '../interfaces/ICell';
+import { TCell } from '../types/types';
 
-export const reconstructPath = (cameFrom: Map<ICell, ICell>, current: ICell): ICell[] => {
-  const path: ICell[] = [];
+export const reconstructPath = (cameFrom: Map<TCell, TCell>, current: TCell): TCell[] => {
+  const path: TCell[] = [];
   while (cameFrom.has(current)) {
     const newCurrent = cameFrom.get(current);
     if (newCurrent) {

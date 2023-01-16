@@ -1,39 +1,47 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
-import { ICell } from '../interfaces/ICell';
+import React, {
+  FunctionComponent,
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { useGridContext } from '../context/gridContext';
+import { TCell } from '../types/types';
 
 interface CellProps {
-  cell: ICell;
+  cell: TCell;
+  onMouseDown: Function;
+  onMouseUp: MouseEventHandler;
+  onMouseEnter: Function;
+  onMouseLeave: Function;
+  onClick: Function;
 }
 
-const Cell: FunctionComponent<CellProps> = ({ cell }: CellProps) => {
-  const { isStart, isTarget, isWall, isNeighbor, visited } = cell;
+const Cell: FunctionComponent<CellProps> = React.memo(
+  ({ cell, onMouseDown, onMouseUp, onMouseEnter, onMouseLeave, onClick }: CellProps) => {
+    const { type, visited, row, col } = cell;
 
-  const [isMouseDown, setIsMouseDown] = useState(false);
-
-  const handleMouseDown = () => {
-    setIsMouseDown(true);
-    if (!cell.isTarget && !cell.isStart) cell.isWall = !cell.isWall;
-  };
-
-  const handleMouseUp = () => {
-    setIsMouseDown(false);
-  };
-
-  return (
-    <div
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      className={`border-[1px] bg-{} border-light-100 w-8 h-8 cursor-pointer ${
-        !isStart && !isTarget && !isWall && 'hover:bg-light-100'
-      }  active:border-white 
-      ${visited && !isStart && !isTarget && 'bg-yellow-400 animate-scale '}
-      ${isNeighbor && !visited && !isTarget && 'bg-gray-500'}
-      ${isWall && 'bg-white animate-scale '}
-      ${isTarget && 'bg-red-400'}
-      ${isStart && 'bg-green-400'}  
+    return (
+      <div
+        onClick={(e) => onClick(cell)}
+        onMouseDown={(e) => onMouseDown(e, row, col, type)}
+        onMouseUp={onMouseUp}
+        onMouseEnter={(e) => onMouseEnter(row, col, type)}
+        onMouseLeave={(e) => onMouseLeave(row, col)}
+        className={`text-xs text-violet-500 flex justify-center items-center border-[1px] bg-{} border-light-100 w-8 h-8 cursor-pointer ${
+          type === 'initial' && 'hover:bg-light-100'
+        }  active:border-white 
+      ${visited && 'bg-yellow-400 animate-scale '}
+      ${type === 'wall' && 'bg-white animate-scale '}
+      ${type === 'target' && 'bg-red-400'}
+      ${type === 'start' && 'bg-green-400'}  
       `}
-    ></div>
-  );
-};
+      >
+        {/* {Number.isFinite(cell.h) && cell.h.toFixed(1)} */}
+      </div>
+    );
+  }
+);
 
 export default Cell;

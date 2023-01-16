@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { COLS, ROWS } from '../constants/constances';
 import { GridContextProvider, useGridContext } from '../context/gridContext';
-import { ICell } from '../interfaces/ICell';
 import Grid from './Grid';
 import Menu from './Menu';
 
 const Layout = () => {
   return (
-    <GridContextProvider rows={20} cols={37}>
+    <GridContextProvider rows={ROWS} cols={COLS}>
       <div className='grid grid-cols-5 border-2x border-white w-full'>
         <Grid />
         <Menu />
