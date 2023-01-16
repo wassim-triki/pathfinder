@@ -1,10 +1,9 @@
 import { getLowestFCell } from '../helpers/getLowestFNode';
 import { getNeighbors } from '../helpers/getNeighbors';
-import { reconstructPath } from '../helpers/reconstructPath';
 import lodash from 'lodash';
 import { useGridContext } from '../context/gridContext';
-import { useContext } from 'react';
 import { TCell, TGrid, TPosition } from '../types/types';
+import { getCellFromPos } from '../helpers/getCellFromPos';
 export const useAstar = () => {
   const { startPosRef, targetPosRef } = useGridContext();
   return (grid: TGrid) => {
@@ -28,6 +27,7 @@ export const useAstar = () => {
       const neighbors = getNeighbors(current, newGrid);
 
       for (const neighbor of neighbors) {
+        neighbor.isNeighbor = true;
         if (neighbor.visited || neighbor.type === 'wall') {
           continue;
         }
@@ -46,9 +46,3 @@ export const useAstar = () => {
     return newGrid;
   };
 };
-
-function getCellFromPos(grid: TGrid, cellPos: TPosition): TCell {
-  const flatGrid = lodash.flattenDeep(grid);
-  const cell = flatGrid.find((c) => c.row === cellPos.row && c.col === cellPos.col);
-  return cell || grid[0][0];
-}

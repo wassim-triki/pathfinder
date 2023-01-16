@@ -5,7 +5,7 @@ export type TCell = {
   col: number;
   type: TCellType;
   visited: boolean;
-  // isNeighbor?: boolean;
+  isNeighbor?: boolean;
   g: number;
   h: number;
   f: number;

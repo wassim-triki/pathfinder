@@ -20,7 +20,7 @@ interface CellProps {
 
 const Cell: FunctionComponent<CellProps> = React.memo(
   ({ cell, onMouseDown, onMouseUp, onMouseEnter, onMouseLeave, onClick }: CellProps) => {
-    const { type, visited, row, col } = cell;
+    const { type, visited, row, col, isNeighbor } = cell;
 
     return (
       <div
@@ -32,6 +32,13 @@ const Cell: FunctionComponent<CellProps> = React.memo(
         className={`text-xs text-violet-500 flex justify-center items-center border-[1px] bg-{} border-light-100 w-8 h-8 cursor-pointer ${
           type === 'initial' && 'hover:bg-light-100'
         }  active:border-white 
+        ${
+          isNeighbor &&
+          !(type === 'start') &&
+          !(type === 'target') &&
+          !visited &&
+          'bg-yellow-100 animate-scale '
+        }
       ${visited && 'bg-yellow-400 animate-scale '}
       ${type === 'wall' && 'bg-white animate-scale '}
       ${type === 'target' && 'bg-red-400'}
