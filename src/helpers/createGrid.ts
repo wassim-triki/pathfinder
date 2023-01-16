@@ -8,7 +8,7 @@ export const createGrid = (rows: number, cols: number): ICell[][] => {
     for (let col = 0; col < cols; col++) {
       const isStart = row === 0 && col === 0;
       const isTarget = row === rows - 1 && col === cols - 1;
-      const isWall = Math.random() < 0.1 && !isStart && !isTarget;
+      const isWall = Math.random() < 0.1 && !isStart && !isTarget && false;
       const cell = {
         id: `${row}-${col}`,
         row,

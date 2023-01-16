@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { astar } from '../astar';
 import { useGridContext } from '../context/gridContext';
 import { createGrid } from '../helpers/createGrid';
 import { getLowestFCell } from '../helpers/getLowestFNode';

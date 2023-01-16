@@ -1,18 +1,19 @@
 import React from 'react';
-import { astar } from '../astar';
+import { useAstar } from '../hooks/useAstar';
 import { useGridContext } from '../context/gridContext';
 import { ICell } from '../interfaces/ICell';
 
 const Menu = () => {
   const { grid, setGrid, startNode } = useGridContext();
 
+  const astar = useAstar();
+
   return (
     <div className='flex justify-center items-center'>
       <button
         className='btn px-8'
         onClick={() => {
-          setGrid(astar(grid, startNode));
-          // console.log(astar(grid));
+          setGrid(astar(grid));
         }}
       >
         Start
