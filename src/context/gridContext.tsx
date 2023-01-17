@@ -85,11 +85,18 @@ export const GridContextProvider = ({ rows, cols, children }: GridContextProvide
   const clearPath = () => {
     setGrid(createGrid(rows, cols, startPosRef.current, targetPosRef.current));
   };
+  // const startSearch = () => {
+  //   setGrid((prev) => {
+  //     const newGrid = createGrid(rows, cols, startPosRef.current, targetPosRef.current);
+  //     return astar(newGrid, startPosRef.current, targetPosRef.current);
+  //   });
+  // };
   const startSearch = () => {
-    setGrid((prev) => {
-      const newGrid = createGrid(rows, cols, startPosRef.current, targetPosRef.current);
-      return astar(newGrid, startPosRef.current, targetPosRef.current);
-    });
+    const newGrid = createGrid(rows, cols, startPosRef.current, targetPosRef.current);
+    setGrid(newGrid);
+    setTimeout(() => {
+      setGrid(astar(newGrid, startPosRef.current, targetPosRef.current));
+    }, 0);
   };
 
   const resetGrid = () => {
