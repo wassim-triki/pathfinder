@@ -20,7 +20,7 @@ interface CellProps {
 
 const Cell: FunctionComponent<CellProps> = React.memo(
   ({ cell, onMouseDown, onMouseUp, onMouseEnter, onMouseLeave, onClick }: CellProps) => {
-    const { type, visited, row, col, isNeighbor } = cell;
+    const { type, visited, row, col } = cell;
 
     return (
       <div
@@ -32,22 +32,16 @@ const Cell: FunctionComponent<CellProps> = React.memo(
         className={`text-xs text-white flex justify-center items-center border-[1px] bg-{} border-light-100 w-8 h-8 cursor-pointer ${
           type === 'initial' && 'hover:bg-light-100'
         }  active:border-white 
-        ${
-          isNeighbor &&
-          !(type === 'start') &&
-          !(type === 'target') &&
-          !visited &&
-          'bg-yellow-100 animate-scale '
-        }
-      ${visited && 'bg-yellow-400 animate-scale '}
-      ${type === 'wall' && 'bg-white animate-scale '}
-      ${type === 'target' && 'bg-red-400'}
-      ${type === 'start' && 'bg-green-400'}  
+        ${visited && !(type === 'start') && 'bg-yellow-400 animate-scale '}
+        ${type === 'wall' && 'bg-white animate-scale '}
+        ${type === 'target' && 'bg-red-400'}
+        ${type === 'neighbor' && 'bg-gray-500 animate-scale '}
+        ${type === 'start' && 'bg-green-400'}  
       `}
       >
-        {Number.isFinite(cell.h) && cell.h.toFixed(1)}
+        {/* {Number.isFinite(cell.h) && cell.h.toFixed(1)}
         <br />
-        {Number.isFinite(cell.g) && cell.g.toFixed(1)}
+        {Number.isFinite(cell.g) && cell.g.toFixed(1)} */}
       </div>
     );
   }

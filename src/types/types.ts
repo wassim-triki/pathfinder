@@ -1,11 +1,10 @@
-export type TCellType = 'initial' | 'start' | 'target' | 'wall';
+export type TCellType = 'initial' | 'start' | 'target' | 'wall' | 'neighbor';
 export type TCell = {
   id: string;
   row: number;
   col: number;
   type: TCellType;
   visited: boolean;
-  isNeighbor?: boolean;
   g: number;
   h: number;
   f: number;

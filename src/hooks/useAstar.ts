@@ -28,9 +28,11 @@ export const useAstar = () => {
       const neighbors = getNeighbors(current, newGrid);
 
       for (const neighbor of neighbors) {
-        neighbor.isNeighbor = true;
         if (neighbor.visited || neighbor.type === 'wall') {
           continue;
+        }
+        if (!(neighbor.type === 'target')) {
+          neighbor.type = 'neighbor';
         }
         const gScore = current.g + 1;
         if (gScore >= neighbor.g) {

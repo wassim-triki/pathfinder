@@ -5,8 +5,8 @@ module.exports = {
     extend: {
       keyframes: {
         scale: {
-          '0%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.2)' },
+          '0%': { transform: 'scale(.7)' },
+          // '50%': { transform: 'scale(1.2)' },
           '100%': { transform: 'scale(1)' },
         },
       },
