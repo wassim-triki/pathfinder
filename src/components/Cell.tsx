@@ -29,7 +29,7 @@ const Cell: FunctionComponent<CellProps> = React.memo(
         onMouseUp={onMouseUp}
         onMouseEnter={(e) => onMouseEnter(row, col, type)}
         onMouseLeave={(e) => onMouseLeave(row, col)}
-        className={`text-xs text-violet-500 flex justify-center items-center border-[1px] bg-{} border-light-100 w-8 h-8 cursor-pointer ${
+        className={`text-xs text-white flex justify-center items-center border-[1px] bg-{} border-light-100 w-8 h-8 cursor-pointer ${
           type === 'initial' && 'hover:bg-light-100'
         }  active:border-white 
         ${
@@ -45,7 +45,9 @@ const Cell: FunctionComponent<CellProps> = React.memo(
       ${type === 'start' && 'bg-green-400'}  
       `}
       >
-        {/* {Number.isFinite(cell.h) && cell.h.toFixed(1)} */}
+        {Number.isFinite(cell.h) && cell.h.toFixed(1)}
+        <br />
+        {Number.isFinite(cell.g) && cell.g.toFixed(1)}
       </div>
     );
   }

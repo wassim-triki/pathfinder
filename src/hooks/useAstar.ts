@@ -5,12 +5,12 @@ import { useGridContext } from '../context/gridContext';
 import { TCell, TGrid, TPosition } from '../types/types';
 import { getCellFromPos } from '../helpers/getCellFromPos';
 export const useAstar = () => {
-  const { startPosRef, targetPosRef } = useGridContext();
-  return (grid: TGrid) => {
+  return (grid: TGrid, startPos: TPosition, targetPos: TPosition) => {
     const newGrid = lodash.cloneDeep(grid);
-    if (!startPosRef || !targetPosRef) return newGrid;
-    const startPos: TPosition = startPosRef.current;
+    // if (!startPosRef) return newGrid;
+    // const startPos: TPosition = startPosRef.current;
     const start = getCellFromPos(newGrid, startPos);
+    const target = getCellFromPos(newGrid, targetPos);
     start.g = 0;
     start.f = start.h;
     const openSet = new Set<TCell>();
@@ -19,7 +19,8 @@ export const useAstar = () => {
     while (openSet.size > 0) {
       const current = getLowestFCell(openSet);
       if (!current) return newGrid;
-      if (current.type === 'target') {
+      console.log(current.id, target.id);
+      if (current.id === target.id) {
         break;
       }
       openSet.delete(current);

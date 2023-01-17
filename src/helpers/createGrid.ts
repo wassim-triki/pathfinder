@@ -22,7 +22,7 @@ export const createGrid = (
           : i === targetPos.row && j === targetPos.col
           ? 'target'
           : 'initial';
-      const isTarget = i === targetPos.row && j === targetPos.col;
+
       const cell: TCell = {
         id: `${i}-${j}`,
         row: i,
@@ -30,7 +30,7 @@ export const createGrid = (
         type,
         visited: false,
         g: Infinity,
-        h: isTarget ? 0 : manhattanDistance(i, j, targetPos.row, targetPos.col),
+        h: type === 'target' ? 0 : manhattanDistance(i, j, targetPos.row, targetPos.col),
         f: Infinity,
       };
       row.push(cell);
