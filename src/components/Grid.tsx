@@ -17,6 +17,7 @@ const Grid: FunctionComponent<GridProps> = () => {
   const { grid, updateNodeState, startPosRef, targetPosRef } = useGridContext();
 
   const mousePressedType = useRef<TCellType | false>(false);
+  const mouseOverType = useRef<TCellType>('initial');
   const handleMouseDown = useCallback(
     (e: any, row: number, col: number, type: TCellType) => {
       // Prevent element drag
@@ -35,11 +36,13 @@ const Grid: FunctionComponent<GridProps> = () => {
 
   const handleMouseUp = useCallback(() => {
     mousePressedType.current = false;
+    mouseOverType.current = 'initial';
   }, []);
 
   const handleMouseEnter = useCallback(
     (row: number, col: number, type: TCellType) => {
       if (mousePressedType.current === 'start' || mousePressedType.current === 'target') {
+        mouseOverType.current = type;
         updateNodeState(mousePressedType.current, row, col);
 
         // Set the new positions of "start" or "target" nodes
@@ -53,10 +56,10 @@ const Grid: FunctionComponent<GridProps> = () => {
   );
 
   const handleMouseLeave = useCallback(
-    (row: number, col: number) => {
+    (row: number, col: number, type: TCellType) => {
       // Start or target are beind dragged out of this node
       if (mousePressedType.current === 'start' || mousePressedType.current === 'target') {
-        updateNodeState('initial', row, col);
+        updateNodeState(mouseOverType.current, row, col);
       }
     },
     [updateNodeState]
@@ -67,7 +70,7 @@ const Grid: FunctionComponent<GridProps> = () => {
   }, []);
 
   return (
-    <div onDragOver={(e) => e.preventDefault()} className='flex flex-col bg-red-300x col-span-4 '>
+    <div className='flex flex-col bg-red-300x col-span-4 '>
       {grid &&
         grid.map((row, i) => (
           <div key={i} className='flex'>

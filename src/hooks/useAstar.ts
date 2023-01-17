@@ -19,19 +19,18 @@ export const useAstar = () => {
     while (openSet.size > 0) {
       const current = getLowestFCell(openSet);
       if (!current) return newGrid;
-      console.log(current.id, target.id);
       if (current.id === target.id) {
         break;
       }
       openSet.delete(current);
-      current.visited = true;
+      if (current.type !== 'start') current.type = 'visited';
       const neighbors = getNeighbors(current, newGrid);
 
       for (const neighbor of neighbors) {
-        if (neighbor.visited || neighbor.type === 'wall') {
+        if (neighbor.type === 'visited' || neighbor.type === 'wall') {
           continue;
         }
-        if (!(neighbor.type === 'target')) {
+        if (neighbor.type !== 'target' && neighbor.type !== 'start') {
           neighbor.type = 'neighbor';
         }
         const gScore = current.g + 1;

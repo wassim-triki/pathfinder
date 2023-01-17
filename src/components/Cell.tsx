@@ -20,7 +20,7 @@ interface CellProps {
 
 const Cell: FunctionComponent<CellProps> = React.memo(
   ({ cell, onMouseDown, onMouseUp, onMouseEnter, onMouseLeave, onClick }: CellProps) => {
-    const { type, visited, row, col } = cell;
+    const { type, row, col } = cell;
 
     return (
       <div
@@ -28,11 +28,11 @@ const Cell: FunctionComponent<CellProps> = React.memo(
         onMouseDown={(e) => onMouseDown(e, row, col, type)}
         onMouseUp={onMouseUp}
         onMouseEnter={(e) => onMouseEnter(row, col, type)}
-        onMouseLeave={(e) => onMouseLeave(row, col)}
+        onMouseLeave={(e) => onMouseLeave(row, col, type)}
         className={`text-xs text-white flex justify-center items-center border-[1px] bg-{} border-light-100 w-8 h-8 cursor-pointer ${
           type === 'initial' && 'hover:bg-light-100'
         }  active:border-white 
-        ${visited && !(type === 'start') && 'bg-yellow-400 animate-scale '}
+        ${type === 'visited' && 'bg-yellow-400 animate-scale '}
         ${type === 'wall' && 'bg-white animate-scale '}
         ${type === 'target' && 'bg-red-400'}
         ${type === 'neighbor' && 'bg-gray-500 animate-scale '}
@@ -42,6 +42,7 @@ const Cell: FunctionComponent<CellProps> = React.memo(
         {/* {Number.isFinite(cell.h) && cell.h.toFixed(1)}
         <br />
         {Number.isFinite(cell.g) && cell.g.toFixed(1)} */}
+        {/* {cell.type[0].toUpperCase()} */}
       </div>
     );
   }
