@@ -3,7 +3,7 @@ import { useAstar } from '../hooks/useAstar';
 import { useGridContext } from '../context/gridContext';
 
 const Menu = () => {
-  const { grid, setGrid, startSearch, resetGrid, clearPath, startPosRef } = useGridContext();
+  const { grid, setGrid, startSearch, resetGrid, clearPath, clearWalls } = useGridContext();
 
   const astar = useAstar();
 
@@ -17,6 +17,9 @@ const Menu = () => {
       </button>
       <button className='btn w-full' onClick={() => clearPath()}>
         Clear Path
+      </button>
+      <button className='btn w-full' onClick={() => clearWalls()}>
+        Clear Walls
       </button>
     </div>
   );

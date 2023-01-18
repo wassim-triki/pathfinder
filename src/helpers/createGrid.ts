@@ -28,7 +28,6 @@ export const createGrid = (
         row: i,
         col: j,
         type,
-        visited: false,
         g: Infinity,
         h: type === 'target' ? 0 : manhattanDistance(i, j, targetPos.row, targetPos.col),
         f: Infinity,

@@ -29,6 +29,13 @@ const Grid: FunctionComponent<GridProps> = () => {
         if (type === 'start' || type === 'target') {
           mousePressedType.current = type;
         }
+        if (type !== 'start' && type !== 'target') {
+          mousePressedType.current = 'wall';
+          updateNodeState(mousePressedType.current, row, col);
+        }
+        if (type === 'wall') {
+          updateNodeState('initial', row, col);
+        }
       }
     },
     [updateNodeState]
@@ -66,7 +73,7 @@ const Grid: FunctionComponent<GridProps> = () => {
   );
 
   const handleClick = useCallback((cell: TCell) => {
-    console.log(cell);
+    // console.log(cell);
   }, []);
 
   return (

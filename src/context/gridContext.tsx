@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { createGrid } from '../helpers/createGrid';
-import lodash from 'lodash';
+import lodash, { initial } from 'lodash';
 import { TCell, TCellType, TGrid, TPosition } from '../types/types';
 import { manhattanDistance } from '../helpers/manhattanDistance';
 import {
@@ -19,6 +19,7 @@ interface GridContextProps {
   updateNodeState: (state: TCellType, row: number, col: number) => void;
   clearPath: () => void;
   startSearch: () => void;
+  clearWalls: () => void;
 }
 const initialState: GridContextProps = {
   grid: [],
@@ -29,6 +30,7 @@ const initialState: GridContextProps = {
   updateNodeState: (state, row, col) => {},
   clearPath: () => {},
   startSearch: () => {},
+  clearWalls: () => {},
 };
 
 interface GridContextProviderProps {
@@ -73,7 +75,18 @@ export const GridContextProvider = ({ rows, cols, children }: GridContextProvide
   const updateNodeState = (type: TCellType, row: number, col: number) => {
     setGrid((prevGrid) => {
       const newGrid = prevGrid.slice();
-      newGrid[row][col].type = type;
+      const cell = newGrid[row][col];
+      cell.type = type;
+      if (type === 'initial') {
+        cell.g = Infinity;
+        cell.f = Infinity;
+        cell.h = manhattanDistance(
+          cell.row,
+          cell.col,
+          targetPosRef.current.row,
+          targetPosRef.current.col
+        );
+      }
       return newGrid;
     });
   };
@@ -83,16 +96,44 @@ export const GridContextProvider = ({ rows, cols, children }: GridContextProvide
   }, [targetPosRef.current]);
 
   const clearPath = () => {
-    setGrid(createGrid(rows, cols, startPosRef.current, targetPosRef.current));
+    const newGrid = grid.map((row) =>
+      row.map((cell) => ({
+        ...cell,
+        type: cell.type === 'visited' || cell.type === 'neighbor' ? 'initial' : cell.type,
+        g: Infinity,
+        h:
+          cell.type === 'target'
+            ? 0
+            : manhattanDistance(
+                cell.row,
+                cell.col,
+                targetPosRef.current.row,
+                targetPosRef.current.col
+              ),
+        f: Infinity,
+      }))
+    );
+    setGrid(newGrid);
   };
-  // const startSearch = () => {
-  //   setGrid((prev) => {
-  //     const newGrid = createGrid(rows, cols, startPosRef.current, targetPosRef.current);
-  //     return astar(newGrid, startPosRef.current, targetPosRef.current);
-  //   });
-  // };
+
   const startSearch = () => {
-    const newGrid = createGrid(rows, cols, startPosRef.current, targetPosRef.current);
+    const newGrid = grid.map((row) =>
+      row.map((cell) => ({
+        ...cell,
+        type: cell.type === 'visited' || cell.type === 'neighbor' ? 'initial' : cell.type,
+        g: Infinity,
+        h:
+          cell.type === 'target'
+            ? 0
+            : manhattanDistance(
+                cell.row,
+                cell.col,
+                targetPosRef.current.row,
+                targetPosRef.current.col
+              ),
+        f: Infinity,
+      }))
+    );
     setGrid(newGrid);
     setTimeout(() => {
       setGrid(astar(newGrid, startPosRef.current, targetPosRef.current));
@@ -106,7 +147,12 @@ export const GridContextProvider = ({ rows, cols, children }: GridContextProvide
       col: TARGET_NODE_COL,
     };
     setGrid(createGrid(rows, cols, startPosRef.current, targetPosRef.current));
-    // setStartNode(null);
+  };
+  const clearWalls = () => {
+    const newGrid = grid.map((row) =>
+      row.map((cell) => ({ ...cell, type: cell.type === 'wall' ? 'initial' : cell.type }))
+    );
+    setGrid(newGrid);
   };
 
   return (
@@ -120,6 +166,7 @@ export const GridContextProvider = ({ rows, cols, children }: GridContextProvide
         setGrid,
         clearPath,
         startSearch,
+        clearWalls,
       }}
     >
       {children}

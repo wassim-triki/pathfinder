@@ -4,7 +4,6 @@ export type TCell = {
   row: number;
   col: number;
   type: TCellType;
-  // visited: boolean;
   g: number;
   h: number;
   f: number;

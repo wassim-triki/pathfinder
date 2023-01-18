@@ -39,9 +39,8 @@ const Cell: FunctionComponent<CellProps> = React.memo(
         ${type === 'start' && 'bg-green-400'}  
       `}
       >
-        {/* {Number.isFinite(cell.h) && cell.h.toFixed(1)}
-        <br />
-        {Number.isFinite(cell.g) && cell.g.toFixed(1)} */}
+        {/* {Number.isFinite(cell.h) && cell.h.toFixed(1)} */}
+        {Number.isFinite(cell.g) && cell.g.toFixed(1)}
         {/* {cell.type[0].toUpperCase()} */}
       </div>
     );
