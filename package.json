@@ -1,4 +1,5 @@
 {
+  "homepage": "https://wassim-triki.github.io/pathfinder",
   "name": "pathfinder",
   "private": true,
   "version": "0.0.0",
@@ -9,7 +10,9 @@
     "preview": "vite preview",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx,json}",
     "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json}'",
-    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "predeploy":"npm run build",
+    "deploy":"gh-pages -d build"
   },
   "dependencies": {
     "lodash": "^4.17.21",
