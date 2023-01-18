@@ -12,7 +12,10 @@
 
 @layer components{
   .btn {
-    @apply flex justify-center items-center border-[1px] border-light-100 bg-transparent px-3 py-1 rounded-[0.375rem] text-base hover:bg-light-100 active:transform active:scale-95
+    @apply flex justify-start items-center border-[1px] border-light-100 bg-transparent px-3 py-1 rounded-[0.375rem] text-base hover:bg-light-100 active:transform active:scale-95 gap-3
+  }
+  .icon{
+    @apply text-accent-100 text-xl
   }
   .cell.start{
     @apply bg-green-400 hover:bg-green-300
