@@ -29,6 +29,7 @@ const Grid: FunctionComponent = () => {
           updateNodeState(draggedCellType.current, row, col);
         }
         if (type === 'wall') {
+          draggedCellType.current = 'initial';
           updateNodeState('initial', row, col);
         }
       }
@@ -46,8 +47,8 @@ const Grid: FunctionComponent = () => {
   const handleMouseEnter = useCallback(
     (row: number, col: number, type: TCellType) => {
       if (type === 'start' || type === 'target') return;
+      mouseOverCellType.current = type;
       if (draggedCellType.current === 'start' || draggedCellType.current === 'target') {
-        mouseOverCellType.current = type;
         updateNodeState(draggedCellType.current, row, col);
 
         // Set the new positions of "start" or "target" nodes
@@ -56,9 +57,8 @@ const Grid: FunctionComponent = () => {
             ? (startPosRef.current = { row, col })
             : (targetPosRef.current = { row, col });
       }
-      if (draggedCellType.current === 'wall') {
-        console.log(draggedCellType.current);
-        updateNodeState('wall', row, col);
+      if (draggedCellType.current === 'wall' || draggedCellType.current === 'initial') {
+        updateNodeState(draggedCellType.current, row, col);
       }
     },
     [updateNodeState]
