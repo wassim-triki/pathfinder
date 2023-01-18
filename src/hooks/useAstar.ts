@@ -22,7 +22,6 @@ export const useAstar = () => {
       if (current.id === target.id) {
         break;
       }
-      console.log(openSet);
       openSet.delete(current);
 
       if (current.type !== 'start') current.type = 'visited';

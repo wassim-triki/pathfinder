@@ -8,16 +8,11 @@ import { reconstructPath } from '../helpers/reconstructPath';
 import { TCell, TCellType } from '../types/types';
 import Cell from './Cell';
 
-interface GridProps {
-  // rows: number;
-  // cols: number;
-}
-
-const Grid: FunctionComponent<GridProps> = () => {
+const Grid: FunctionComponent = () => {
   const { grid, updateNodeState, startPosRef, targetPosRef } = useGridContext();
 
-  const mousePressedType = useRef<TCellType | false>(false);
-  const mouseOverType = useRef<TCellType>('initial');
+  const draggedCellType = useRef<TCellType | false>(false);
+  const mouseOverCellType = useRef<TCellType>('initial');
   const handleMouseDown = useCallback(
     (e: any, row: number, col: number, type: TCellType) => {
       // Prevent element drag
@@ -27,11 +22,11 @@ const Grid: FunctionComponent<GridProps> = () => {
       if (e.buttons === 1) {
         // Drag start or target nodes
         if (type === 'start' || type === 'target') {
-          mousePressedType.current = type;
+          draggedCellType.current = type;
         }
         if (type !== 'start' && type !== 'target') {
-          mousePressedType.current = 'wall';
-          updateNodeState(mousePressedType.current, row, col);
+          draggedCellType.current = 'wall';
+          updateNodeState(draggedCellType.current, row, col);
         }
         if (type === 'wall') {
           updateNodeState('initial', row, col);
@@ -43,27 +38,26 @@ const Grid: FunctionComponent<GridProps> = () => {
 
   const handleMouseUp = useCallback((e: any) => {
     if (e.buttons === 0) {
-      mousePressedType.current = false;
-      mouseOverType.current = 'initial';
-      console.log('MOUSE UP');
+      draggedCellType.current = false;
+      mouseOverCellType.current = 'initial';
     }
   }, []);
 
   const handleMouseEnter = useCallback(
     (row: number, col: number, type: TCellType) => {
       if (type === 'start' || type === 'target') return;
-      if (mousePressedType.current === 'start' || mousePressedType.current === 'target') {
-        mouseOverType.current = type;
-        updateNodeState(mousePressedType.current, row, col);
+      if (draggedCellType.current === 'start' || draggedCellType.current === 'target') {
+        mouseOverCellType.current = type;
+        updateNodeState(draggedCellType.current, row, col);
 
         // Set the new positions of "start" or "target" nodes
         if (startPosRef && targetPosRef)
-          mousePressedType.current === 'start'
+          draggedCellType.current === 'start'
             ? (startPosRef.current = { row, col })
             : (targetPosRef.current = { row, col });
       }
-      if (mousePressedType.current === 'wall') {
-        console.log(mousePressedType.current);
+      if (draggedCellType.current === 'wall') {
+        console.log(draggedCellType.current);
         updateNodeState('wall', row, col);
       }
     },
@@ -73,8 +67,8 @@ const Grid: FunctionComponent<GridProps> = () => {
   const handleMouseLeave = useCallback(
     (row: number, col: number, type: TCellType) => {
       // Start or target are beind dragged out of this node
-      if (mousePressedType.current === 'start' || mousePressedType.current === 'target') {
-        updateNodeState(mouseOverType.current, row, col);
+      if (draggedCellType.current === 'start' || draggedCellType.current === 'target') {
+        updateNodeState(mouseOverCellType.current, row, col);
       }
     },
     [updateNodeState]
