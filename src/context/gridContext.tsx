@@ -10,8 +10,6 @@ import {
   TARGET_NODE_ROW,
 } from '../constants/constances';
 import { useAstar } from '../hooks/useAstar';
-import { clearGrid } from '../helpers/clearGrid';
-import { cellToInitialState } from '../helpers/cellToInitialState';
 interface GridContextProps {
   grid: TGrid;
   startPosRef: React.MutableRefObject<TPosition> | null;
@@ -80,18 +78,58 @@ export const GridContextProvider = ({ rows, cols, children }: GridContextProvide
       const cell = newGrid[row][col];
       cell.type = type;
       if (type === 'initial') {
-        newGrid[row][col] = cellToInitialState(cell, startPosRef.current, targetPosRef.current);
+        cell.g = Infinity;
+        cell.f = Infinity;
+        cell.h = manhattanDistance(
+          cell.row,
+          cell.col,
+          targetPosRef.current.row,
+          targetPosRef.current.col
+        );
       }
       return newGrid;
     });
   };
 
   const clearPath = () => {
-    setGrid(clearGrid(grid, startPosRef.current, targetPosRef.current));
+    const newGrid = grid.map((row) =>
+      row.map((cell) => ({
+        ...cell,
+        type: cell.type === 'visited' || cell.type === 'neighbor' ? 'initial' : cell.type,
+        g: Infinity,
+        h:
+          cell.type === 'target'
+            ? 0
+            : manhattanDistance(
+                cell.row,
+                cell.col,
+                targetPosRef.current.row,
+                targetPosRef.current.col
+              ),
+        f: Infinity,
+      }))
+    );
+    setGrid(newGrid);
   };
 
   const startSearch = () => {
-    const newGrid = clearGrid(grid, startPosRef.current, targetPosRef.current);
+    const newGrid = grid.map((row) =>
+      row.map((cell) => ({
+        ...cell,
+        type: cell.type === 'visited' || cell.type === 'neighbor' ? 'initial' : cell.type,
+        g: Infinity,
+        h:
+          cell.type === 'target'
+            ? 0
+            : manhattanDistance(
+                cell.row,
+                cell.col,
+                targetPosRef.current.row,
+                targetPosRef.current.col
+              ),
+        f: Infinity,
+      }))
+    );
     setGrid(newGrid);
     setTimeout(() => {
       setGrid(astar(newGrid, startPosRef.current, targetPosRef.current));
