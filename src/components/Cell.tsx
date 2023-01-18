@@ -40,7 +40,7 @@ const Cell: FunctionComponent<CellProps> = React.memo(
       `}
       >
         {/* {Number.isFinite(cell.h) && cell.h.toFixed(1)} */}
-        {Number.isFinite(cell.g) && cell.g.toFixed(1)}
+        {/* {Number.isFinite(cell.g) && cell.g.toFixed(1)} */}
         {/* {cell.type[0].toUpperCase()} */}
       </div>
     );
