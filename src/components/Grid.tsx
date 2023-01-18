@@ -41,13 +41,17 @@ const Grid: FunctionComponent<GridProps> = () => {
     [updateNodeState]
   );
 
-  const handleMouseUp = useCallback(() => {
-    mousePressedType.current = false;
-    mouseOverType.current = 'initial';
+  const handleMouseUp = useCallback((e: any) => {
+    if (e.buttons === 0) {
+      mousePressedType.current = false;
+      mouseOverType.current = 'initial';
+      console.log('MOUSE UP');
+    }
   }, []);
 
   const handleMouseEnter = useCallback(
     (row: number, col: number, type: TCellType) => {
+      if (type === 'start' || type === 'target') return;
       if (mousePressedType.current === 'start' || mousePressedType.current === 'target') {
         mouseOverType.current = type;
         updateNodeState(mousePressedType.current, row, col);
@@ -58,8 +62,12 @@ const Grid: FunctionComponent<GridProps> = () => {
             ? (startPosRef.current = { row, col })
             : (targetPosRef.current = { row, col });
       }
+      if (mousePressedType.current === 'wall') {
+        console.log(mousePressedType.current);
+        updateNodeState('wall', row, col);
+      }
     },
-    [update]
+    [updateNodeState]
   );
 
   const handleMouseLeave = useCallback(
