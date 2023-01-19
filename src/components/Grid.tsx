@@ -12,7 +12,17 @@ const Grid: FunctionComponent = () => {
   const { grid, updateNodeState, startPosRef, targetPosRef } = useGridContext();
 
   const draggedCellType = useRef<TCellType | false>(false);
-  const mouseOverCellType = useRef<TCellType>('initial');
+  const mouseOverCellType = useRef<TCellType | false>(false);
+
+  const dragged = useRef<TCellType | null>(null);
+  const entered = useRef<TCellType | null>(null);
+  const left = useRef<TCellType | null>(null);
+  const over = useRef<TCellType | null>(null);
+
+  useEffect(() => {
+    // console.log(over.current);
+  }, [over.current]);
+
   const handleMouseDown = useCallback(
     (e: any, row: number, col: number, type: TCellType) => {
       // Prevent element drag
@@ -22,14 +32,14 @@ const Grid: FunctionComponent = () => {
       if (e.buttons === 1) {
         // Drag start or target nodes
         if (type === 'start' || type === 'target') {
-          draggedCellType.current = type;
+          dragged.current = type;
         }
-        if (type !== 'start' && type !== 'target') {
-          draggedCellType.current = 'wall';
-          updateNodeState(draggedCellType.current, row, col);
+        if (type === 'initial') {
+          dragged.current = 'wall';
+          updateNodeState('wall', row, col);
         }
         if (type === 'wall') {
-          draggedCellType.current = 'initial';
+          dragged.current = 'initial';
           updateNodeState('initial', row, col);
         }
       }
@@ -39,36 +49,59 @@ const Grid: FunctionComponent = () => {
 
   const handleMouseUp = useCallback((e: any) => {
     if (e.buttons === 0) {
-      draggedCellType.current = false;
-      mouseOverCellType.current = 'initial';
+      dragged.current = null;
+      over.current = null;
+      entered.current = null;
+      left.current = null;
     }
   }, []);
 
   const handleMouseEnter = useCallback(
     (row: number, col: number, type: TCellType) => {
-      if (type === 'start' || type === 'target') return;
-      mouseOverCellType.current = type;
-      if (draggedCellType.current === 'start' || draggedCellType.current === 'target') {
-        updateNodeState(draggedCellType.current, row, col);
-
-        // Set the new positions of "start" or "target" nodes
-        if (startPosRef && targetPosRef)
-          draggedCellType.current === 'start'
+      entered.current = type;
+      over.current = type;
+      if (!dragged.current || type === 'start' || type === 'target') return;
+      if (dragged.current === 'start' || dragged.current === 'target') {
+        updateNodeState(dragged.current, row, col);
+        if (targetPosRef && startPosRef)
+          dragged.current === 'start'
             ? (startPosRef.current = { row, col })
             : (targetPosRef.current = { row, col });
       }
-      if (draggedCellType.current === 'wall' || draggedCellType.current === 'initial') {
-        updateNodeState(draggedCellType.current, row, col);
-      }
+      if (dragged.current === 'wall') updateNodeState('wall', row, col);
+      if (dragged.current === 'initial') updateNodeState('initial', row, col);
+      // if (draggedCellType.current === 'start' || draggedCellType.current === 'target') {
+      //   if (type === 'start' || type === 'target') {
+      //   }
+      //   updateNodeState(draggedCellType.current, row, col);
+
+      //   // Set the new positions of "start" or "target" nodes
+      //   if (startPosRef && targetPosRef)
+      //     draggedCellType.current === 'start'
+      //       ? (startPosRef.current = { row, col })
+      //       : (targetPosRef.current = { row, col });
+      // }
+      // if (draggedCellType.current === 'wall' || draggedCellType.current === 'initial') {
+      //   updateNodeState(draggedCellType.current, row, col);
+      // }
     },
     [updateNodeState]
   );
 
   const handleMouseLeave = useCallback(
     (row: number, col: number, type: TCellType) => {
-      // Start or target are beind dragged out of this node
-      if (draggedCellType.current === 'start' || draggedCellType.current === 'target') {
-        updateNodeState(mouseOverCellType.current, row, col);
+      left.current = type;
+
+      if (
+        over.current === dragged.current &&
+        (dragged.current === 'start' || dragged.current === 'target')
+      ) {
+        updateNodeState('initial', row, col);
+      }
+
+      if (dragged.current === 'start' || dragged.current === 'target') {
+        if (over.current && over.current !== 'target' && over.current !== 'start')
+          updateNodeState(over.current, row, col);
       }
     },
     [updateNodeState]
